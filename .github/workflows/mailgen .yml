@@ -3,47 +3,46 @@ name: Mailgen Workflow
 on:
   schedule:
     - cron: '0 */3 * * *'  # Runs every 3 hours
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install Python 3
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests faker  # Add any other required dependencies
 
       - name: Run Mailgen script
         run: python mailgen/mailgen.py -n 100 -o emails.txt
 
-      - name: Commit emails.txt
+      - name: Commit and push if changed
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+          git pull origin main
           git add emails.txt
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update generated emails" && git pull --rebase && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update generated emails" && git push)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          name: generated-emails
+          path: emails.txt
