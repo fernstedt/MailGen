@@ -34,14 +34,14 @@ jobs:
           pip install requests
 
       - name: Run Mailgen script
-        run: python mailgen.py -n 100 -o emails.txt
+        run: python mailgen/mailgen.py -n 100 -o emails.txt
 
       - name: Commit emails.txt
         run: |
-          git config --local user.email "${{ secrets.GIT_EMAIL }}"
-          git config --local user.name "${{ secrets.GIT_NAME }}"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add emails.txt
-          git commit -m "Update emails.txt with generated emails"
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update generated emails" && git pull --rebase && git push)
 
       - name: Push changes
         uses: ad-m/github-push-action@master
