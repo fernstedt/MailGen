@@ -27,7 +27,7 @@ jobs:
         run: python mailgen/mailgen.py -n 100 -o emails.txt
 
       - name: Upload emails.txt
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to v3
         with:
           name: emails
           path: emails.txt
