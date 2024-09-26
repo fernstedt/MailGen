@@ -27,7 +27,7 @@ jobs:
           pip install requests faker  # Add any other required dependencies
 
       - name: Run Mailgen script
-        run: python mailgen/mailgen.py -n 100 -o emails.txt
+        run: python mailgen.py -n 100 -o emails.txt
 
       - name: Commit and push if changed
         run: |
