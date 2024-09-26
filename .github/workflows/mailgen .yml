@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0  # We need the full history for this approach
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: setup-python@v5
         with:
           python-version: '3.8'
 
