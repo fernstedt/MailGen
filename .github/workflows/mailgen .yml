@@ -1,5 +1,6 @@
 name: Mailgen Workflow
-
+   - name: Print working directory
+     run: pwd
 on:
   schedule:
     - cron: '0 */3 * * *'  # Runs every 3 hours
@@ -24,7 +25,7 @@ jobs:
         run: pip install requests
 
       - name: Run Mailgen script
-        run: python mailgen/mailgen.py -n 100 -o emails.txt
+        run: python mailgen.py -n 100 -o emails.txt
 
       - name: Upload emails.txt
         uses: actions/upload-artifact@v3  # Updated to v3
