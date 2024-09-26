@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,7 +27,7 @@ jobs:
           pip install requests faker  # Add any other required dependencies
 
       - name: Run Mailgen script
-        run: python mailgen.py -n 100 -o emails.txt
+        run: python mailgen/mailgen.py -n 100 -o emails.txt
 
       - name: Commit and push if changed
         run: |
@@ -33,6 +35,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git add emails.txt
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update generated emails" && git push)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
