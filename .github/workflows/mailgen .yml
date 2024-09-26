@@ -2,7 +2,7 @@ name: Mailgen Workflow
 
 on:
   schedule:
-    - cron: '0 */10 * * *'  # Runs every 3 hours
+    - cron: '0 */3 * * *'  # Runs every 3 hours
   push:
     branches:
       - main
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # We need the full history for this approach
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,13 +31,18 @@ jobs:
       - name: Run Mailgen script
         run: python mailgen/mailgen.py -n 100 -o emails.txt
 
-      - name: Commit and push changes
+      - name: Commit and force push changes
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add emails.txt
           git commit -m "Update generated emails"
-          git push
+          git fetch origin main
+          git checkout -B temp-branch
+          git reset --soft origin/main
+          git add .
+          git commit -m "Update generated emails"
+          git push --force origin temp-branch:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
