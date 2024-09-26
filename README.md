@@ -1,0 +1,2 @@
+# MailGen
+Random email generator 
