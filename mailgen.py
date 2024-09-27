@@ -42,7 +42,6 @@ def generate_emails(first_names, last_names, hosts, num_emails):
         # Generate different email formats
         emails.append(f"{first_name}.{last_name}@{host}")
         emails.append(f"{first_name}{last_name}@{host}")
-        emails.append(f"random@{host}")  # Random email format
 
     return emails
 
