@@ -2,7 +2,7 @@ name: Mailgen Workflow
 
 on:
   schedule:
-    - cron: '0 */24 * * *'  # Runs every 3 hours
+    - cron: '0 */24 * * *'  # Runs every 24 hours
   push:
     branches:
       - main
