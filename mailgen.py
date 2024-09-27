@@ -8,7 +8,7 @@ BANNER = """
 ██  ██  ██ ██   ██ ██ ██      ██    ██ ██      ██  ██ ██ 
 ██      ██ ██   ██ ██ ███████  ██████  ███████ ██   ████ 
 ┌─────────────────────────────────────────────────────┐
-│ Version: 1 │ Github: @fernstedt | Created by math0x │
+│ Version: 0.5 │ Github: @fernstedt | Created by math0x │
 └─────────────────────────────────────────────────────┘
 """
 print(BANNER)  # Print the banner at the start
