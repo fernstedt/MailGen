@@ -2,7 +2,7 @@ name: Mailgen Workflow
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # Runs every 3 hours
+    - cron: '0 */24 * * *'  # Runs every 3 hours
   push:
     branches:
       - main
@@ -29,7 +29,7 @@ jobs:
           pip install requests faker  # Add any other required dependencies
 
       - name: Run Mailgen script
-        run: python mailgen.py -n 100 -o emails.txt
+        run: python mailgen.py -n 300 -o emails.txt
 
       - name: Debug information
         run: |
